@@ -27,10 +27,10 @@ const Index = () => {
         <div className={style.skills}>
           <h2>Skills</h2>
           <div className={style.skillsContainer}>
-            <div><Image src="/images/javascript.svg" alt="javascript" /><span>JavaScript / 10 years</span></div>
-            <div><Image src="/images/react.svg" alt="react" /><span>React / 5 years</span></div>
-            <div><Image src="/images/gatsby.svg" alt="gatsby" /><span>Gatsby / 3 years</span></div>
-            <div><Image src="/images/next.svg" alt="next" /><span>Next.JS / 3 years</span></div>
+            <div><Image src="/images/javascript.svg" width={100} height={100} alt="javascript" /><span>JavaScript / 10 years</span></div>
+            <div><Image src="/images/react.svg" width={100} height={100} alt="react" /><span>React / 5 years</span></div>
+            <div><Image src="/images/gatsby.svg" width={100} height={100} alt="gatsby" /><span>Gatsby / 3 years</span></div>
+            <div><Image src="/images/next.svg" width={100} height={100} alt="next" /><span>Next.JS / 3 years</span></div>
           </div>
         </div>
 
