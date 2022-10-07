@@ -1,22 +1,27 @@
-import matter from "gray-matter"
 import ReactMarkdown from "react-markdown"
 import Image from "next/image"
 import Layout from "../../components/layout"
 import * as style from "../../styles/singleBlog.module.scss"
+import SEO from "../../components/seo"
+import { getAllBlogs, getSingleBlog } from "../../utils/mdQueries"
+import PrevNext from "../../components/prevNext"
 
 
-const SingleBlog = (props) => {
+const SingleBlog = ({ frontmatter, markdownBody, prev, next }) => {
+    const { title, date, excerpt, image } = frontmatter
     return (
         <Layout>
+            <SEO title={title} description={excerpt} />
             <div className={style.hero}>
-                <Image src={props.frontmatter.image} alt="blog-image" height="500" width="1000" />
+                <Image src={image} alt="blog-image" height="500" width="1000" />
             </div>
             <div className={style.wrapper}>
                 <div className={style.container}>
-                    <h1>{props.frontmatter.title}</h1>
-                    <p>{props.frontmatter.date}</p>
-                    <ReactMarkdown>{props.markdownBody}</ReactMarkdown>
+                    <h1>{title}</h1>
+                    <p>{date}</p>
+                    <ReactMarkdown>{markdownBody}</ReactMarkdown>
                 </div>
+                <PrevNext prev={prev} next={next} />
             </div>
         </Layout>
     )
@@ -25,16 +30,8 @@ const SingleBlog = (props) => {
 export default SingleBlog
 
 export async function getStaticPaths() {
-    const blogSlugs = ((context) => {
-        const keys = context.keys()
-        const data = keys.map((key, index) => {
-            let slug = key.replace(/^.*[\\\/]/, '').slice(0, -3)
-            return slug
-        })
-        return data
-    })(require.context('../../data', true, /\.md$/))
-
-    const paths = blogSlugs.map((blogSlug) => `/blog/${blogSlug}`)
+    const { orderedBlogs } = await getAllBlogs()
+    const paths = orderedBlogs.map((orderedBlog) => `/blog/${orderedBlog.slug}`)
 
     return {
         paths: paths,
@@ -43,14 +40,17 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps(context) {
-    const { slug } = context.params
-    const data = await import(`../../data/${slug}.md`)
-    const singleDocument = matter(data.default)
+    const { singleDocument } = await getSingleBlog(context)
+    const { orderedBlogs } = await getAllBlogs()
+    const prev = orderedBlogs.filter(orderedBlog => orderedBlog.frontmatter.id === singleDocument.data.id - 1)
+    const next = orderedBlogs.filter(orderedBlog => orderedBlog.frontmatter.id === singleDocument.data.id + 1)
 
     return {
         props: {
             frontmatter: singleDocument.data,
             markdownBody: singleDocument.content,
+            prev,
+            next,
         }
     }
 }

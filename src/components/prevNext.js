@@ -8,7 +8,7 @@ const PrevNext =(props) => {
             {0 < props.prev.length &&
                 <Link href={`/blog/${props.prev[0].slug}`}>
                     <a className={style.linkCard}>
-                        <Image src="/images/arrow-left.svg" alt="arrow-left" />
+                        <Image src="/images/arrow-left.svg" alt="arrow-left" width="24" height="27" />
                         <h3> {props.prev[0].frontmatter.title}</h3>
                     </a>
                 </Link>
@@ -17,7 +17,7 @@ const PrevNext =(props) => {
                 <Link href={`/blog/${props.next[0].slug}`}>
                     <a className={style.linkCard}>
                         <h3>{props.next[0].frontmatter.title}</h3>
-                        <Image src="/images/arrow-right.svg" alt="arrow-right" />
+                        <Image src="/images/arrow-right.svg" alt="arrow-right" width="24" height="27" />
                     </a>
                 </Link>
             }
